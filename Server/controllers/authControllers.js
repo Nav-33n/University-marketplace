@@ -9,6 +9,7 @@ const generateToken = (user) => {
       id: user._id,
       email: user.email,
       username: user.username,
+      role: user.role || 'user', // Default to 'user' if role is not set
     },
     process.env.JWT_SECRET,
     { expiresIn: '2h' }

@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema(
         profilePhoto: {
             type: String,
             default: ''},
+        role : {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user' // Default role is 'user'
+        },
     }, {timestamps: true} // Automatically manage createdAt and updatedAt fields
 );
 

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const protect = (req, res, next) => {
   let token;
+ const authHeader = req.headers.authorization || '';
 
   // Check for Bearer token in Authorization header
   if (
@@ -9,7 +10,7 @@ const protect = (req, res, next) => {
     req.headers.authorization.startsWith('Bearer ')
   ) {
     try {
-      token = req.headers.authorization.split(' ')[1];
+      token = authHeader.split(' ')[1];
 
       // Verify JWT token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -19,6 +20,7 @@ const protect = (req, res, next) => {
         id: decoded.id,
         email: decoded.email,
         username: decoded.username,
+        role: decoded.role || 'user', // Default to 'user' if role is not set
       };
 
       next(); // Pass control to next middleware/route
@@ -29,6 +31,7 @@ const protect = (req, res, next) => {
   } else {
     return res.status(401).json({ message: 'Unauthorized: No token provided' });
   }
+
 };
 
 module.exports = protect;
