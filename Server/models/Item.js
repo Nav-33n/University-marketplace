@@ -32,7 +32,13 @@ const itemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    sold: {
+        type: Boolean, 
+        default: false}, // Indicates if the item has been sold
+    buyer: {
+        type: mongoose.Schema.Types.ObjectId,
+         ref: 'User'}, // Reference to the user who bought the item, if applicable
 }, { timestamps: true }); // Automatically manage createdAt and updatedAt fields
 
 module.exports = mongoose.model('Item', itemSchema); // Export the Item model to be used in other parts of the application

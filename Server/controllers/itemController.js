@@ -117,3 +117,68 @@ exports.deleteItem = async (req, res) => {
         });
     }
 };
+
+exports.buyItem = async (req, res) => {
+    try {
+        const item = await Item.findById(req.params.id);
+
+        if (!item || item.type !== 'sell'){
+            return res.status(404).json({
+                message: "Item not found or not available for sale",
+            });
+        }
+        if (item.sold) {
+            return res.status(400).json({
+                message: "Item has already been sold",
+            });
+        }
+
+        if(item.user.toString() === req.user.id) {
+            return res.status(400).json({
+                message: "You cannot buy your own item",
+            });
+        }
+
+        item.sold = true;
+        item.buyer = req.user.id; // Set the buyer to the current user 
+
+        await item.save();
+
+        res.json({
+            message: "Item purchased successfully",
+            item,
+        });
+    } catch (error) {
+        console.error("Error purchasing item:", error);
+        res.status(500).json({
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+};
+
+exports.getMyPurchases = async (req, res) => {
+  try {
+    const purchases = await Item.find({ buyer: req.user.id })
+      .populate('user', 'username email') // shows seller info
+      .sort({ updatedAt: -1 });
+
+    res.json(purchases);
+  } catch (error) {
+    console.error('Error getting purchases:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+exports.getMySoldItems = async (req, res) => {
+  try {
+    const soldItems = await Item.find({ user: req.user.id, sold: true })
+      .populate('buyer', 'username email')
+      .sort({ updatedAt: -1 });
+
+    res.json(soldItems);
+  } catch (error) {
+    console.error('Error fetching sold items:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
