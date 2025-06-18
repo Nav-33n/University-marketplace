@@ -4,10 +4,9 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import AddItem from './pages/AddItem';
 import ItemDetails from './pages/itemDetails';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import Profile from './pages/Profile';
-import BackendConnection from '../backendConnection';
 
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-      <BackendConnection />
     </div>
   );
 }
