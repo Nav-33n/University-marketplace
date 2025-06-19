@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import API from '../../services/api';
 import loginImage from '../../assets/login_illustration2.png'; 
 import logo from '../../assets/logo1.png';
-import { storeToken } from '../../utils/tokenStorage'
+import { useAuth } from '../../services/authContext';
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -19,7 +22,7 @@ const LoginPage = () => {
     setError('');
     try {
       const res = await API.post('/auth/login', form);
-      storeToken('token', res.data.token);
+      login(res.data.token);
       // Optional: store user data
       navigate('/Home');
     } catch (err) {

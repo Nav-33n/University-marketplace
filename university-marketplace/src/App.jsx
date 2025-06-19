@@ -8,6 +8,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Profile from './pages/Profile';
 import PrivateRoute from './utils/PrivateRoute'
+import AppLayout from './pages/components/AppLayout';
 
 function App() {
   return (
@@ -19,10 +20,12 @@ function App() {
 
         {/*Private Section*/}
         <Route element={<PrivateRoute />}>
+        <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/add-item" element={<AddItem />} />
         <Route path="/item/:id" element={<ItemDetails />} />
         <Route path="/profile" element={<Profile />} />
+        </Route>
         </Route>
       </Routes>
     </div>
