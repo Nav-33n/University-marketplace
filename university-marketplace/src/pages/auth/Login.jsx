@@ -1,9 +1,33 @@
-// src/pages/Auth/LoginPage.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import API from '../../services/api';
 import loginImage from '../../assets/login_illustration2.png'; 
 import logo from '../../assets/logo1.png';
+import { storeToken } from '../../utils/tokenStorage'
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      const res = await API.post('/auth/login', form);
+      storeToken('token', res.data.token);
+      // Optional: store user data
+      navigate('/Home');
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Login failed');
+    }
+  };
+
+
   return (
     <div className="flex min-w-screen min-h-screen items-center justify-center bg-[#f5f2f0] px-4">
 <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
@@ -23,24 +47,14 @@ const LoginPage = () => {
     {/* Logo and Heading */}
     <div className="flex items-start gap-1 justify-center mb-6">
       <img src={logo} alt="UniBazaar Logo" className="w-10 h-10" />
-      <h2 className="text-[22px] font-bold text-[#1f2d5a] mt-[1px]">UniBazaar</h2>
+      <h2 className="text-[22px] font-bold text-[#1f2d5a] mt-[3.5px]">UniBazaar</h2>
     </div>
-    <p className="text-[22px] font-bold text-[#17285e] mb-1 text-left">
-     Welcome back! Please login</p>8
-    {/* Form Fields */}
-          <form class="space-y-4">
-  
-  <div>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      placeholder="Name"
-      
-      class="w-full block text-sm text-gray-500 mb-1 bg-gray-100 font-semibold rounded-xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400"
-    />
-  </div>
+    <p className="text-[22px] font-bold text-[#17285e] mb-6 text-left">
+     Welcome back! Please login</p>
 
+ {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
+    {/* Form Fields */}
+  <form class="space-y-4" onSubmit={handleSubmit}>
  
   <div>
     <input
@@ -48,6 +62,8 @@ const LoginPage = () => {
       id="email"
       name="email"
       placeholder="Email Address"
+      value={form.email}
+      onChange={handleChange}
       class="w-full block text-sm text-gray-500 mb-1 bg-gray-100  font-semibold rounded-xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400"
     />
   </div>
@@ -58,7 +74,10 @@ const LoginPage = () => {
       id="password"
       name="password"
       placeholder="Password"
+      value={form.password}
+      onChange={handleChange}
       class="w-full block text-sm text-gray-500 mb-1 bg-gray-100 font-semibold rounded-xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-purple-300 placeholder-gray-400"
+      required   
     />
     </div>
   
