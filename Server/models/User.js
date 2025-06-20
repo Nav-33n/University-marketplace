@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true
+            required: true,
         },
         profilePhoto: {
             type: String,
@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema(
             enum: ['user', 'admin'],
             default: 'user' // Default role is 'user'
         },
+         passwordResetToken: String,
+         passwordResetExpires: Date,
     }, {timestamps: true} // Automatically manage createdAt and updatedAt fields
 );
 

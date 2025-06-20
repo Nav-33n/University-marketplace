@@ -10,6 +10,8 @@ router.post('/register', authController.registerUser); // Route for user registr
 router.post('/login', authController.loginUser); // Route for user login
 
 router.get('/profile', protect, authController.getUserProfile); // Route to get user profile, protected by middleware
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
 
 module.exports = router; // Export the router to be used in the main server file
 
