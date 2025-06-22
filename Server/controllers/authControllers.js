@@ -24,7 +24,7 @@ exports.registerUser = async (req, res) => {
 
     //check the username
     const nameRegex = /^[a-zA-Z ]+$/;
-    console.log(username)
+  
     // Check if user already exists
     const existingUser = await User.findOne({
   $or: [{ email }, { username }]
@@ -127,7 +127,7 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.resetPassword = async (req, res) => {
-  const { token, email } = req.query;
+  const { token} = req.params;
   const { password } = req.body;
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');

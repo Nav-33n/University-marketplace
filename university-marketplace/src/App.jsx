@@ -9,6 +9,8 @@ import Register from './pages/auth/Register';
 import Profile from './pages/Profile';
 import PrivateRoute from './utils/PrivateRoute'
 import AppLayout from './pages/components/AppLayout';
+import ResetPassword from './pages/auth/ResetPassword';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 function App() {
   return (
@@ -17,6 +19,9 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path='/reset-password/:token' element={<ResetPassword />} />
+
 
         {/*Private Section*/}
         <Route element={<PrivateRoute />}>
