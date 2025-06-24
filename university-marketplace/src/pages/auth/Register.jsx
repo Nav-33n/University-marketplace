@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../services/authContext";
 import API from "../../services/api";
 import logo from "../../assets/logo1.png"
@@ -137,6 +137,10 @@ function Register() {
         />
         </div>
       
+       <div className="flex justify-end text-sm mb-4">
+              <Link to="/login" className="text-blue-600 mt-0.5">Already have an account?</Link>
+            </div>
+
   
     
       <div>

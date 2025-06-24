@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.use(helmet());
 app.use(morgan('dev')); // logs to console
-app.use(cors()); // Enable CORS to allow requests from frontend (e.g., React app)
+app.use(cors()); // Enable CORS to allow requests from frontend 
 app.use(express.json()); // Parse incoming JSON data in request bodies
 
 const apiLimiter = rateLimit({

@@ -3,10 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // Page components
 import Home from './pages/Home';
 import AddItem from './pages/AddItem';
-import ItemDetails from './pages/itemDetails';
+import ItemDetails from './pages/components/homePage/ItemDetails';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import Profile from './pages/Profile';
+import Profile from './pages/components/homePage/Profile';
 import PrivateRoute from './utils/PrivateRoute'
 import AppLayout from './pages/components/AppLayout';
 import ResetPassword from './pages/auth/ResetPassword';

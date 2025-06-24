@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import API from '../../services/api';
 import loginImage from '../../assets/login_illustration2.png'; 
 import logo from '../../assets/logo1.png';
 import { useAuth } from '../../services/authContext';
+
 
 
 const LoginPage = () => {
@@ -84,9 +85,16 @@ const LoginPage = () => {
     />
     </div>
   
-  <div className="flex justify-end text-sm mb-4">
-              <a href="#" className="text-blue-600">Forgot password?</a>
+  <div className="flex items-center justify-between mb-2">
+      <div className="flex justify-start text-base">
+              <Link to="/register" className="text-blue-600 mt-1">Sign Up</Link>
             </div>
+
+  <div className="flex justify-end text-base">
+              <Link to="/forgot-password" className="text-blue-600 mt-2">Forgot password?</Link>
+            </div>
+  </div>
+         
 
   <div>
     <button type="submit" class="w-full bg-[#1f2d5a] text-white font-semibold py-2 px-4 rounded-xl hover:bg-[#2e4173] transition duration-300 mb-4 mt-3">
