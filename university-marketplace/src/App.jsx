@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // Page components
 import Home from './pages/Home';
 import AddItem from './pages/AddItem';
-import ItemDetails from './pages/components/homePage/ItemDetails';
+import ProductDetails from './pages/components/homePage/ProductDetails';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Profile from './pages/components/homePage/Profile';
@@ -25,12 +25,11 @@ function App() {
 
         {/*Private Section*/}
         <Route element={<PrivateRoute />}>
-        <Route element={<AppLayout />}>
+        {/* <Route element={<AppLayout />}> */}
         <Route path="/home" element={<Home />} />
         <Route path="/add-item" element={<AddItem />} />
-        <Route path="/item/:id" element={<ItemDetails />} />
+        <Route path="/item/:id" element={<ProductDetails />} />
         <Route path="/profile" element={<Profile />} />
-        </Route>
         </Route>
       </Routes>
     </div>

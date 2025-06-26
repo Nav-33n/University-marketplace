@@ -36,6 +36,7 @@ app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/rentals', rentalRoutes);
 
+
 // Connect to MongoDB using Mongoose
 mongoose.connect(process.env.MONGO_URI).then(() => 
     console.log('Connected to MongoDB'))

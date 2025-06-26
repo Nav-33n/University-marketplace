@@ -25,7 +25,7 @@ const LoginPage = () => {
       const res = await API.post('/auth/login', form);
       login(res.data.token);
       // Optional: store user data
-      navigate('/Home');
+      navigate('/home');
     } catch (err) {
       setError(err?.response?.data?.message || 'Login failed');
     }
