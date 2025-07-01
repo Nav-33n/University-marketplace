@@ -10,7 +10,7 @@ const upload = multer({
     fileSize: 1 * 1024 * 1024 // ✅ Max 1MB
   },
   fileFilter: (req, file, cb) => {
-    console.log("📥 Received file type:", file.mimetype);
+    console.log("Received file type:", file.mimetype);
 
     if (!file.mimetype.startsWith('image/')) {
       return cb(new Error('Only image files are allowed'), false);

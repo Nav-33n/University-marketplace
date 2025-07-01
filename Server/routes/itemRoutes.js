@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const itemController = require('../controllers/itemController');
+const uploadController = require('../controllers/uploadControllers');
+const multiUpload = require('../middleware/multiUpload'); // Middleware for handling multiple file uploads
 const protect = require('../middleware/authMiddleware');
 
 router.get('/purchases', protect, itemController.getMyPurchases); // Get items purchased by the user
@@ -10,8 +12,7 @@ router.get('/sold', protect, itemController.getMySoldItems); // Get items sold b
 
 router.post('/:id/buy', protect, itemController.buyItem); // Mark an item as sold
 
-//General CRUD routes LAST
-router.post('/', protect, itemController.createItem); // Create a new item
+router.post('/upload', protect, multiUpload.array('images', 3), itemController.createItem); // Create a new item
 
 router.get('/', itemController.getAllItems); // Get all items
 

@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { getToken } from './tokenStorage';
 
 const PrivateRoute = () => {
-  const token = getToken(); // 🔐 Decrypt + retrieve
+  const token = getToken(); 
   return token ? <Outlet /> : <Navigate to="/login" />;
 };
 

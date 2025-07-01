@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = import.meta.env.VITE_UNIBAZAAR_CREDENTIAL; // ⚠️ Use env for production
+const SECRET_KEY = import.meta.env.VITE_UNIBAZAAR_CREDENTIAL; 
 
 export const storeToken = (token) => {
   const encrypted = CryptoJS.AES.encrypt(token, SECRET_KEY).toString();

@@ -17,16 +17,16 @@ const itemSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['electronics', 'furniture', 'clothing', 'books', 'other'] // Example categories
+        enum: ['Electronics', 'Furniture', 'Clothing', 'Books', 'Other'] // Example categories
     },
     type: {
         type: String,
         required: true,
-        enum: ['sell', 'rent', 'wanted'] // Type of item
+        enum: ['Sell', 'Rent', 'Wanted'] // Type of item
     },
-    imageUrl: {
-        type: String,
-        default: '' // Optional image URL for the item.  later working with Cloudinary/supabase to update or retrive 
+    imageUrls: {
+        type: [String],
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

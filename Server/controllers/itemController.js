@@ -1,18 +1,44 @@
 const Item = require('../models/Item');
-
+const supabase = require('../utils/supabaseClient');
 
 exports.createItem = async (req, res) => {
     try {
-        const { title, description, price, category, type, user} = req.body;
+        const { title, description, price, category, type } = req.body;
+        const files = req.files;
+        const userId = req.user.id;
+
+        console.log("BODY:", req.body);
+
+
+     if (!files || files.length < 1 || files.length > 3) {
+    return res.status(400).json({ message: "At least 1 and At most 3 image is required" });
+        }
+        
+        const imageUrls = [];
+        
+        for (const file of files) {
+    const ext = file.originalname.split('.').pop();
+    const fileName = `product-${userId}-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from('product-image')
+      .upload(fileName, file.buffer, { contentType: file.mimetype });
+
+    if (error) return res.status(500).json({ message: error.message });
+
+    const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/product-image/${fileName}`;
+    imageUrls.push(imageUrl);
+  }
 
         const newItem = await Item.create(
             {
                 title,
                 description,
-                price,
+                price: parseFloat(price),
                 category,
-                type, // "sell", "rent", or "wanted"
-                user: req.user.id, // From authMiddleware
+                type, 
+                imageUrls, 
+                user: req.user.id
             });
     
             res.status(201).json({
