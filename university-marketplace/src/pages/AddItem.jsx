@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import api from '../services/api';
 import ImageUploader from '../services/ImageUploader'
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddItem = ({ userToken}) => {
+  
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -28,6 +34,8 @@ const AddItem = ({ userToken}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setUploadProgress(0);
 
     if (images.length === 0 || images.length > 3) {
       alert('Please upload between 1 and 3 images.');
@@ -44,14 +52,22 @@ const AddItem = ({ userToken}) => {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${userToken}`,
         },
+        onUploadProgress: (progressEvent) => {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percent);
+        },
       });
 
       alert('Successfully submitted!');
+      queryClient.invalidateQueries(['items']);
       navigate('/home')
     } catch (err) {
       console.error(err);
       alert('Submission failed. Try again.');
-    } 
+    } finally {
+      setIsSubmitting(false);
+      setUploadProgress(0);
+    }
   };
 
   return (
@@ -130,20 +146,29 @@ const AddItem = ({ userToken}) => {
         </div>
       </div>
 
-      {/* 🔌 ImageUploader component will go here */}
       <div>
         <label className="block text-sm font-medium text-gray-600">Product Images</label>
-        <div className="mt-2 text-black border rounded-md p-4">
+        <div className="flex mt-2 text-black rounded-md p-4 justify-center">
             <ImageUploader onImagesChange={setImages} />
         </div>
       </div>
 
       <button
         type="submit"
-        className="block bg-blue-600 hover:bg-blue-700 my-10 text-white font-semibold py-2 px-6 rounded-md"
+        className="block bg-blue-600 hover:bg-blue-700 my-4 text-white font-semibold py-2 px-6 rounded-md"
+        disabled={isSubmitting}
       >
         Submit
       </button>
+
+        {isSubmitting && (
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+          <div
+            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${uploadProgress}%` }}
+          ></div>
+          </div> )}
+
     </form>
     </div>
   );

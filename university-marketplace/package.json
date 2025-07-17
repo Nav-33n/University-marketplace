@@ -13,6 +13,7 @@
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.17",
     "@tailwindcss/vite": "^4.1.10",
+    "@tanstack/react-query": "^5.81.5",
     "axios": "^1.10.0",
     "browser-image-compression": "^2.0.2",
     "crypto-js": "^4.2.0",
@@ -25,6 +26,7 @@
     "react-easy-crop": "^5.4.2",
     "react-hook-form": "^7.59.0",
     "react-router-dom": "^7.6.2",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {

@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     removeToken();
     setUser(null);
-    navigate('/login');
+    localStorage.removeItem('profilePhoto');
+    navigate("/login")
   };
 
   return (

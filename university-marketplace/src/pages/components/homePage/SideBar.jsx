@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Home, ShoppingBag , Logs, Settings, CircleHelp, CirclePlus, LogOut } from 'lucide-react';
+import { Home, ShoppingBasket , Logs, Settings, CircleHelp, CirclePlus, LogOut } from 'lucide-react';
 import { useAuth } from '../../../services/authContext';
 import logo from '../../../assets/logo1.png';
 
 function SideBar() {
-    const { user, logout } = useAuth();
+    const { logout } = useAuth();
+    const [loading, setLoading] = useState(false);
+    
+
+    const handleLogout = async() => {
+      setLoading(true);
+      try {
+        logout();
+
+      } catch (error) {
+        console.error('logout Failed:', error);
+      } finally {
+        setLoading(false)
+      }
+    };
   
   return (
      <div className="flex-col items-center gap-3">
@@ -38,18 +52,18 @@ function SideBar() {
         <NavLink
           to="/purchases"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-400  ${
+            `flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-400  ${
               isActive ? 'bg-gray-100 text-black font-semibold' : ''
             }`
           }
         >
-          <ShoppingBag size={25} className="text-black " /><span className="text-black text-[1.2em]">Purchases</span>
+          <ShoppingBasket size={25} className="text-black" /><span className="text-black text-[1.2em]">Purchases</span>
         </NavLink>
 
         <NavLink
           to="/my-items"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-400 ${
+            `flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-400 ${
               isActive ? 'bg-gray-100 text-black font-semibold' : ''
             }`
           }
@@ -59,7 +73,7 @@ function SideBar() {
          <NavLink
           to="/add-item"
           className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-400  ${
+            `flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-400  ${
               isActive ? 'bg-gray-100 text-black font-semibold' : ''
             }`
           }
@@ -90,16 +104,25 @@ function SideBar() {
         </NavLink>
 
          <NavLink
-          onClick={() => {
-    logout(); }}
+          onClick= {handleLogout}
           className={({ isActive }) =>
             `flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-400 ${
               isActive ? ' text-black font-semibold' : ''
             }`
           }
         >
-          <LogOut size={25} className="text-black" /><span className="text-black text-[1.2em]">Logout</span>
-        </NavLink>
+          {loading ? (
+         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 text-white">
+      <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p className="text-xl font-semibold">Logging out...</p>
+    </div>
+      ) : (
+        <>
+          <LogOut size={25} className="text-black" />
+          <span className="text-black text-[1.2em]">Logout</span>
+        </>
+      )}        
+      </NavLink>
       </nav> 
       </div>
   );

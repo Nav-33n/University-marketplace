@@ -6,19 +6,29 @@ import api from '../../../services/api';
 export default function ProfileImageUpload({ userToken}) {
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
-
+  const [loading, setLoading] = useState(false);   
+  
   useEffect(() => {
     const fetchProfileImage = async () => {
+      
+      const cachedImage = localStorage.getItem('profilePhoto');
+      if(cachedImage) {
+        setImage(cachedImage);
+        return;
+      }
+
       try {
         const res = await api.get('/users/profile', {
           headers:{
             Authorization: `Bearer ${userToken}`,
           },
         });
-    
-        setImage(res.data.profilePhoto || default_Image); // Set default image if none exists
+        const profilePhoto = res.data.profilePhoto || default_Image; 
+        setImage(profilePhoto);
+        localStorage.setItem('profilePhoto', profilePhoto);
       } catch (err) {
         console.error('Failed to load profile image:', err);
+        setImage(default_Image);
       }
     }
 
@@ -26,6 +36,10 @@ export default function ProfileImageUpload({ userToken}) {
   }, [userToken]);
 
   const handleImageChange = async (e) => {
+    e.preventDefault();
+    if (loading) return; // Prevent multiple uploads while loading
+    setLoading(true);
+
     const originalFile = e.target.files[0];
     if (!originalFile) return;
 
@@ -47,13 +61,15 @@ export default function ProfileImageUpload({ userToken}) {
         Authorization: `Bearer ${userToken}`,
       },
     });
-
-    alert ('Profile image updated successfully!');
     setImage(res.data.profilePhoto);
+    localStorage.setItem('profilePhoto', res.data.profilePhoto)
     } catch (error) {
       alert('Failed to upload profile image. Please try again.');
       console.error('Error uploading profile image:', error);
+    } finally {
+      setLoading(false);
     }
+
   }
 
   return (
@@ -63,16 +79,22 @@ export default function ProfileImageUpload({ userToken}) {
         <img
           src={image || default_Image}
           alt="Profile"
-          className="w-full h-full object-fill rounded-2xl"
+          className="w-full h-full object-cover rounded-md"
         />
         {/* Hidden input */}
         <input
           id="profile-upload"
           type="file"
+          disabled={loading}
           accept="image/*"
           onChange={handleImageChange}
           className="hidden"
         />
+        {loading &&  (
+          <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-full z-10">
+            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>       
+         )}
       </label>
     </div>
   );

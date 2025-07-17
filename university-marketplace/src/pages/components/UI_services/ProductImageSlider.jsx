@@ -4,13 +4,17 @@ import {ArrowLeft, ArrowRight} from 'lucide-react';
 
 const ProductImageSlider = ({ images = [] }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider(
     {
-      loop: true,
+    
       slides: { perView: 1 },
       slideChanged(slider) {
         setCurrentSlide(slider.track.details.rel);
       },
+      created() {
+        setLoaded(true)
+      }
     }
   );
 
@@ -22,25 +26,27 @@ const ProductImageSlider = ({ images = [] }) => {
   };
 
   return (
-    <div className="relative w-full items-center mb-3">
+    <div className="relative w-full items-center mb-5 overflow-hidden">
       {/* Slider */}
       <div
         ref={sliderRef}
-        className="keen-slider rounded-md 70-hidden h-48"
+        className="keen-slider rounded-md sm:w-full sm:h-full"
       >
-        {images.map((imgUrl, idx) => (
-          <div key={idx} className="keen-slider__slide">
-            <img
-              src={imgUrl}
-              alt={`product-${idx}`}
-              className="object-contain w-full h-full rounded-md"
-            />
-          </div>
+        {loaded && images.map((imgUrl, idx) => (
+      <div key={idx}
+        className="keen-slider__slide w-full h-full rounded-md aspect-auto"
+      >
+        <img
+          src={imgUrl}
+          alt={`product-${idx}`}
+          className="w-full h-full object-cover"
+        />
+      </div>
         ))}
       </div>
 
       {/* Arrows */}
-      {images.length > 1 && (
+      {loaded && images.length > 1 && (
         <>
           <button
             onClick={() => goTo('prev')}

@@ -13,7 +13,7 @@ export default function Layout() {
     const userToken = getToken();
 
     return(
-       <div className="grid sm:grid-cols-12 min-h-screen bg-white px-9 py-5">
+       <div className="grid sm:grid-cols-12 min-h-screen  px-9 py-5">
     <div className="sm:col-span-2 bg-h-screen sticky pr-4">
       <SideBar />  
     </div>
