@@ -1,8 +1,8 @@
-import SideBar from './SideBar';
-import SearchBar from './SearchBar';
-import NotificationButton from './NotificationBtn';
-import MailButton from './MessageBtn';
-import ProfileImageUpload from './Profile';
+import SidebarWrapper from '../SideBar/SidebarWrapper';
+import SearchBar from '../SearchBar/SearchBar';
+import NotificationButton from '../NotificationBtn/NotificationBtn';
+import MailButton from '../MessageBtn/MessageBtn';
+import ProfileImageUpload from '../Profile/Profile';
 import { useAuth } from '../../../services/authContext';
 import { getToken } from '../../../utils/tokenStorage';
 import { Outlet } from 'react-router-dom';
@@ -15,7 +15,7 @@ export default function Layout() {
     return(
        <div className="grid sm:grid-cols-12 min-h-screen  px-9 py-5">
     <div className="sm:col-span-2 bg-h-screen sticky pr-4">
-      <SideBar />  
+      <SidebarWrapper /> 
     </div>
      <div className="hidden sm:block col-span-10">
           <div className="flex items-center justify-between ">

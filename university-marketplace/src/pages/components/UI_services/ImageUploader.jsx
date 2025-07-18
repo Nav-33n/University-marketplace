@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import imageCompression from 'browser-image-compression';
-import { cropToAspectRatio } from '../utils/cropImageHelper';
+import { cropToAspectRatio } from '../../../utils/cropImageHelper';
 import ImageCropper from './ImageCropper';
 
 const ImageUploader = ({ onImagesChange }) => {

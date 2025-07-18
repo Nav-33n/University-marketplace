@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useKeenSlider } from "keen-slider/react";
 import {ArrowLeft, ArrowRight} from 'lucide-react';
 
 const ProductImageSlider = ({ images = [] }) => {
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider(
@@ -49,13 +50,15 @@ const ProductImageSlider = ({ images = [] }) => {
       {loaded && images.length > 1 && (
         <>
           <button
-            onClick={() => goTo('prev')}
+            onClick={() =>
+              goTo('prev')}
             className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-black rounded-full p-1 shadow"
           >
         <ArrowLeft size={12} className="text-black" />
           </button>
           <button
-            onClick={() => goTo('next')}
+            onClick={() => 
+              goTo('next')}
             className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-white rounded-full p-1 shadow"
           >
             <ArrowRight size={12} className="text-black" />
@@ -69,7 +72,8 @@ const ProductImageSlider = ({ images = [] }) => {
           {images.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => instanceRef.current?.moveToIdx(idx)}
+              onClick={() => 
+                instanceRef.current?.moveToIdx(idx)}
               className={`w-2.5 h-2.5 rounded-full ${
                 currentSlide === idx ? 'bg-blue-600' : 'bg-gray-300'
               }`}

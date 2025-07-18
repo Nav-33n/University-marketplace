@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Home, ShoppingBasket , Logs, Settings, CircleHelp, CirclePlus, LogOut } from 'lucide-react';
+import { Home, ShoppingBasket , Logs, Settings, CircleHelp, CirclePlus, LogOut, X } from 'lucide-react';
 import { useAuth } from '../../../services/authContext';
 import logo from '../../../assets/logo1.png';
 
-function SideBar() {
+function SideBar({onClose}) {
     const { logout } = useAuth();
     const [loading, setLoading] = useState(false);
     
@@ -22,7 +22,10 @@ function SideBar() {
     };
   
   return (
-     <div className="flex-col items-center gap-3">
+     <div className="flex-col items-center gap-3 h-full">
+       <div className="flex justify-end mb-2 sm:hidden">
+        <X size={24} className="cursor-pointer text-black" onClick={onClose} />
+      </div>
      <Link
   to="/home"
   className="flex items-center gap-2 sm:gap-3 px-2 py-1 hover:opacity-90 transition mb-4"

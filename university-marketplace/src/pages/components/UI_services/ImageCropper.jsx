@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
-import { cropFile } from '../utils/cropImageHelper';
+import { cropFile } from '../../../utils/cropImageHelper';
 
 const ImageCropper = ({ file, onCancel, onDone, aspectRatio = 3 / 4 }) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../../services/api';
 import loginImage from '../../assets/login_illustration2.png'; 
@@ -33,11 +33,11 @@ const LoginPage = () => {
 
 
   return (
-    <div className="flex min-w-screen min-h-screen items-center justify-center bg-[#f5f2f0] px-4">
+    <div className="flex min-w-screen min-h-screen items-center justify-center px-4">
 <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-2 overflow-hidden">
 
   {/* Left: Image */}
-  <div className="bg-[#fdfaf5] flex justify-center items-center p-6">
+  <div className="bg-[#f3e7f789] flex justify-center items-center p-6">
     <img
       src={loginImage}
       alt="Students exchanging items"

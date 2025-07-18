@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import API from '../../../services/api';
+import API from '../../services/api';
 import { useQuery } from "@tanstack/react-query";
 import { useState } from 'react';
 import { MessagesSquare, Heart, Share2 } from 'lucide-react';
@@ -31,7 +31,7 @@ function ProductInfo() {
       const images = product.imageUrls;
 
   return (
-    <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
+    <div className="grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 border-b-4 rounded pb-5 border-[#ced7dfbb]">
         <div className='w-full overflow-hidden'>
             <div className='pr-10'>
             <img

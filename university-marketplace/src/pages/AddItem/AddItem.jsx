@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import api from '../services/api';
-import ImageUploader from '../services/ImageUploader'
+import { useState } from 'react';
+import api from '../../services/api';
+import ImageUploader from '../components/UI_services/ImageUploader';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -71,7 +71,7 @@ const AddItem = ({ userToken}) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-[#ffffff72]">
     <form onSubmit={handleSubmit} className="justify-center flex flex-col space-y-6 p-2  rounded-xl shadow">
       <h2 className="text-2xl font-bold text-gray-800">Add New Item</h2>
 

@@ -1,19 +1,19 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Page components
-import AddItem from './pages/AddItem';
-import UserProducts from './pages/components/homePage/UserProducts';
+import AddItem from './pages/AddItem/AddItem';
+import UserProducts from './pages/UserItems/UserProducts';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import Profile from './pages/components/homePage/Profile';
+import Profile from './pages/HomeLayout/Profile/Profile';
 import PrivateRoute from './utils/PrivateRoute'
-import Layout from './pages/components/homePage/Layout';
+import Layout from './pages/HomeLayout/Home/Layout';
 import ResetPassword from './pages/auth/ResetPassword';
 import ForgotPassword from './pages/auth/ForgotPassword';
-import ProductList from './pages/components/homePage/ProductList';
+import ProductList from './pages/HomeLayout/ProductContent/ProductList';
 import { useAuth } from './services/authContext';
 import { getToken } from './utils/tokenStorage';
-import ProductInfo from './pages/components/ProductInfo/ProductInfo';
+import ProductInfo from './pages/ProductLayout/ProductInfo';
 
 function App() {
     const { user } = useAuth();

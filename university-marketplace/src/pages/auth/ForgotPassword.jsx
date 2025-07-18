@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import API from '../../services/api';
-import keyLogo from '../../assets/keyLogo1.png'
+import keyLogo from '../../assets/keylogo1.png';
 
 
 const ForgotPassword = () => {
