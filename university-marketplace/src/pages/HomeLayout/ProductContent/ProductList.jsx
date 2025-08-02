@@ -1,63 +1,96 @@
-import api from '../../../services/api';
+import api from "../../../services/api";
 import "keen-slider/keen-slider.min.css";
-import ProductImageSlider from '../../components/UI_services/ProductImageSlider'
-import { useQuery } from '@tanstack/react-query';
-import { NavLink } from 'react-router-dom';
-
+import ProductImageSlider from "../../components/UI_services/ProductImageSlider";
+import { useQuery } from "@tanstack/react-query";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function ProductList() {
-  const { data: items = [], isLoading, isError } = useQuery({
-    queryKey: ['items'],
+  const {
+    data: items = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["items"],
     queryFn: async () => {
-      const res = await api.get('/items');
+      const res = await api.get("/items");
       return res.data.items;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
     refetchOnWindowFocus: true,
   });
 
+  const navigate = useNavigate();
+
   if (isLoading) return <p className="p-4">Loading items...</p>;
   if (isError) return <p className="p-4 text-red-500">Failed to load items.</p>;
+  if (!items || items.length === 0)
+    return (
+      <p className="p-4 text-red-500">
+        Be the first User to add item on this App
+      </p>
+    );
 
   return (
     <div className="flex">
       <nav>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6" >
-        
-      {items.map((item) => (
-            <NavLink to={`/product/${item._id}`} key={item._id} 
-             onClickCapture={(e) => {
-            if (e.target.closest('.prevent-nav')) {
-              e.preventDefault();
-            }
-          }}
-         className="relative space-x-3 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer">
-
-        <div className='prevent-nav relative mx-3 mt-3 flex h-60  rounded-xl overflow-hidden' >
-          <ProductImageSlider images={item.imageUrls} />
-      </div>
-          <div className='mt-4 px-5 pb-5'>
-              <h5 className="text-xl tracking-tight text-slate-900">{item.title}</h5>
-            <div className="mt-2 mb-2 flex items-center justify-between">
-               <p>
-        <span className="text-2xl font-semibold text-slate-900">₹{item.price}{item.type === 'Rent' && <span className="text-xs"> /day</span>}
-        </span>
-              </p>
-              <div>
-                <span className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                  {item.type}
-                </span>
-              </div>
-              </div>
-              <p className="font-semibold text-neutral-400 text-xs mt-4">By {item.user?.username || 'Unknown'}</p>
-          </div>
-      </NavLink>
-      ))}
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {items
+            .filter(
+              (item) => item.status !== "pending" && item.status !== "Sold"
+            )
+            .map((item) => (
+              <NavLink
+                to={`/product/${item._id}`}
+                key={item._id}
+                onClickCapture={(e) => {
+                  if (e.target.closest(".prevent-nav")) {
+                    e.preventDefault();
+                  }
+                }}
+                className="relative space-x-3 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer"
+              >
+                <div className="prevent-nav relative mx-3 mt-3 flex h-60  rounded-xl overflow-hidden">
+                  <ProductImageSlider images={item.imageUrls} />
+                </div>
+                <div className="mt-4 px-5 pb-5">
+                  <h5 className="text-xl tracking-tight text-slate-900">
+                    {item.title}
+                  </h5>
+                  <div className="mt-2 mb-2 flex items-center justify-between">
+                    <p>
+                      <span className="text-2xl font-semibold text-slate-900">
+                        ₹{item.price}
+                        {item.type === "Rent" && (
+                          <span className="text-xs"> /day</span>
+                        )}
+                      </span>
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/checkout", {
+                          state: {
+                            id: item._id,
+                            title: item.title,
+                            img: item.imageUrls[0],
+                            price: item.price,
+                          },
+                        });
+                      }}
+                    >
+                      <span className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        {item.type}
+                      </span>
+                    </button>
+                  </div>
+                  <p className="font-semibold text-neutral-400 text-xs mt-4">
+                    By {item.user?.username || "Unknown"}
+                  </p>
+                </div>
+              </NavLink>
+            ))}
+        </div>
       </nav>
     </div>
-  )
-  };
-  
-  
-  
+  );
+}

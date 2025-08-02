@@ -20,7 +20,7 @@ function SideBar({onClose}) {
         setLoading(false)
       }
     };
-  
+
   return (
      <div className="flex-col items-center gap-3 h-full">
        <div className="flex justify-end mb-2 sm:hidden">
@@ -53,7 +53,7 @@ function SideBar({onClose}) {
     </NavLink>
 
         <NavLink
-          to="/purchases"
+          to="/purchase"
           className={({ isActive }) =>
             `flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-400  ${
               isActive ? 'bg-gray-100 text-black font-semibold' : ''
@@ -71,7 +71,7 @@ function SideBar({onClose}) {
             }`
           }
         >
-          <Logs size={25} className="text-black" /><span className="text-black text-[1.2em]">My Items</span>
+          <Logs size={25} className="text-black" /><span className="text-black text-[1.2em]">My Products</span>
         </NavLink>
          <NavLink
           to="/add-item"
@@ -81,7 +81,7 @@ function SideBar({onClose}) {
             }`
           }
         >
-          <CirclePlus size={25} className="text-black " /><span className="text-black text-[1.2em]">Add Items</span>
+          <CirclePlus size={25} className="text-black " /><span className="text-black text-[1.2em]">Add Product</span>
         </NavLink>
 
         <NavLink

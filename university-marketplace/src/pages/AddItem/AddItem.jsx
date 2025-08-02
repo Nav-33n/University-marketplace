@@ -21,7 +21,7 @@ const AddItem = ({ userToken}) => {
 
   const [images, setImages] = useState([]); // max 3 cropped + compressed images
 
-  const categories = ['Books', 'Electronics', 'Furniture', 'Clothing', 'Stationery'];
+  const categories = ['Books', 'Electronics', 'Furniture', 'Clothing', 'Stationery', 'Other'];
   const types = ['Sell', 'Rent'];
 
   const handleChange = (e) => {
@@ -80,6 +80,7 @@ const AddItem = ({ userToken}) => {
         <input
           type="text"
           name="title"
+          maxlength="65" 
           value={formData.title}
           onChange={handleChange}
           required
@@ -92,6 +93,7 @@ const AddItem = ({ userToken}) => {
         <textarea
           name="description"
           rows={4}
+          maxlength="150" 
           value={formData.description}
           onChange={handleChange}
           required
