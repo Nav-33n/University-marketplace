@@ -36,7 +36,7 @@ const itemSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
-    user: {
+    seller: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -49,10 +49,6 @@ const itemSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    buyer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    }, // Reference to the user who bought the item
   },
   { timestamps: true }
 );

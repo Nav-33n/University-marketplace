@@ -29,14 +29,16 @@ export default function ProductList() {
         Be the first User to add item on this App
       </p>
     );
-
   return (
     <div className="flex">
       <nav>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {items
             .filter(
-              (item) => item.status !== "pending" && item.status !== "Sold"
+              (item) =>
+                item.status !== "pending" &&
+                item.status !== "Sold" &&
+                item.status !== "Reserved"
             )
             .map((item) => (
               <NavLink
@@ -84,7 +86,7 @@ export default function ProductList() {
                     </button>
                   </div>
                   <p className="font-semibold text-neutral-400 text-xs mt-4">
-                    By {item.user?.username || "Unknown"}
+                    By {item.seller?.username || "Unknown"}
                   </p>
                 </div>
               </NavLink>

@@ -1,37 +1,6 @@
 const { CronJob } = require("cron");
 const Order = require("../models/Order");
 
-// const formatTime = (ms) => {
-//   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-//   const minutes = Math.floor(totalSeconds / 60);
-//   const seconds = totalSeconds % 60;
-//   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-// };
-
-// const startCountdown = (order) => {
-//   const targetTime = new Date(order.dealClosureTime);
-
-//   const countdownInterval = setInterval(async () => {
-//     const now = new Date();
-//     const timeLeft = targetTime - now;
-
-//     if (timeLeft <= 0) {
-//       console.log(`\n⏳ Order ${order._id} → Deal closed!`);
-//       clearInterval(countdownInterval);
-
-//       // Update DB status
-//       order.status = 'dealed-closed';
-//       await order.save();
-//       console.log(`✅ Order ${order._id} status updated to dealed-closed`);
-//       return;
-//     }
-
-//     process.stdout.write(
-//       `\rOrder ${order._id} → Time left: ${formatTime(timeLeft)}`
-//     );
-//   }, 1000);
-// };
-
 const dealCloser = new CronJob("*/10 * * * *", async () => {
   const now = new Date();
 
@@ -39,14 +8,20 @@ const dealCloser = new CronJob("*/10 * * * *", async () => {
     console.log(`[${now.toISOString()}] Checking for expired Deals...`);
 
     const expiredOrders = await Order.find({
-      status: "exchange-verified",
-      dealClosureTime: { $lte: now }, //less than or equal to current time
-    });
+      $or: [
+        { status: "exchange-verified", dealClosureTime: { $lte: now } },
 
+        // Rental: period ended (status agnostic)
+        { orderType: "rental", "rentalDetails.state": "picked_up" },
+      ],
+    });
     for (let order of expiredOrders) {
-      order.status = "dealed-closed";
+      order.status = "deal-closed";
+      if (order.rentalDetails.state === "picked_up") {
+        order.rentalDetails.state = "in_use";
+      }
       await order.save();
-      console.log(`Order ${order._id} marked as dealed-closed`);
+      console.log(`Order ${order._id} marked as deal-closed  and saved.`);
     }
   } catch (err) {
     console.error("Cron error while closing deals:", err);

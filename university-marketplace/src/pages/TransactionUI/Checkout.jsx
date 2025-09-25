@@ -5,48 +5,82 @@ import API from "../../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-// import { ToastContainer, toast } from 'react-toastify';
+import DateDropdown from "./DateDropDown";
 
 export default function Checkout({ userToken }) {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
+
   const queryClient = useQueryClient();
   const location = useLocation();
-  const { id, img, title, price } = location.state || {};
+  const { id, img, title, price, type } = location.state || {};
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState("");
 
   const onSubmit = async (data) => {
     setLoading(true);
-    try {
-      const payload = {
-        itemId: id,
-        department: data.department,
-        place: data.place,
-        address: data.address,
-        phone: data.phone,
-        terms: data.terms,
-      };
 
-      await API.post("/orders/create", payload, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-      alert("Successful Place Order");
-      queryClient.invalidateQueries(["items"]);
-      navigate("/purchase");
-    } catch (err) {
-      console.log("An error Occurred: ", err);
-    } finally {
-      setLoading(false);
+    if (type === "Rent") {
+      try {
+        const rentPayload = {
+          itemId: id,
+          department: data.department,
+          place: data.place,
+          address: data.address,
+          phone: data.phone,
+          totalDays: Number(selectedDate),
+          terms: data.terms,
+        };
+        await API.post("/orders/rental-create", rentPayload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        alert("Successful Place Order");
+        queryClient.invalidateQueries(["items"]);
+        navigate("/purchase");
+      } catch (err) {
+        console.log("An error Occurred: ", err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        const payload = {
+          itemId: id,
+          department: data.department,
+          place: data.place,
+          address: data.address,
+          phone: data.phone,
+          terms: data.terms,
+        };
+        await API.post("/orders/create", payload, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+        alert("Successful Place Order");
+        queryClient.invalidateQueries(["items"]);
+        navigate("/purchase");
+      } catch (err) {
+        console.log("An error Occurred: ", err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
+
+  const perDay = Number(price) || 0;
+
+  const total = perDay * (selectedDate || 0);
 
   return (
     <form
@@ -97,7 +131,7 @@ export default function Checkout({ userToken }) {
         <div>
           <h2 className="flex items-center gap-2 text-xl font-semibold mb-4 text-black">
             <MapPin size={20} className="text-black" />
-            2. Delivery Details
+            2. Meet Up Details
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <select
@@ -136,7 +170,19 @@ export default function Checkout({ userToken }) {
             {errors.address && "Address is required"}
           </div>
         </div>
+        {/* Rental Dates */}
+        {type === "Rent" && (
+          <DateDropdown
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        )}
 
+        {errors.selectedDate === "" && (
+          <p className="text-red-500 text-sm mt-1">
+            Please select a valid date range (max 7 days).
+          </p>
+        )}
         <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm w-fit mb-3">
           Cash on Delivery (COD) Only
         </div>
@@ -154,7 +200,29 @@ export default function Checkout({ userToken }) {
           />
           <div>
             <h4 className="text-md font-semibold">{title}</h4>
-            <p className="text-lg font-bold text-cyan-700 mt-2">₹{price}</p>
+            <p className="text-lg font-bold text-cyan-700 mt-2">
+              ₹{type === "Rent" ? `${price}/Day` : price}
+            </p>
+          </div>
+        </div>
+
+        {/* Price Summary */}
+        <div className="mt-4 bg-white p-3 rounded-lg border">
+          <div className="flex justify-between text-sm">
+            <span>Per Day</span>
+            <span className="font-medium">₹{perDay}</span>
+          </div>
+
+          <div className="flex justify-between text-sm mt-1">
+            <span>Selected Days</span>
+            {<span className="font-medium">{selectedDate || 0}</span>}
+          </div>
+
+          <div className="border-t mt-3 pt-3 flex justify-between items-center">
+            <span className="font-semibold">Total</span>
+            <span className="text-xl font-bold text-cyan-700">
+              ₹{isNaN(total) ? 0 : total}
+            </span>
           </div>
         </div>
 

@@ -18,6 +18,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -31,14 +32,14 @@ app.use("/api/", apiLimiter);
 const authRoutes = require("./routes/authRoutes");
 const itemRoutes = require("./routes/itemRoutes");
 const userRoutes = require("./routes/userRoutes");
-const rentalRoutes = require("./routes/rentalRoutes");
+// const rentalRoutes = require("./routes/rentalRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 
 // Use routes
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/rentals", rentalRoutes);
+// app.use("/api/rentals", rentalRoutes);
 app.use("/api/orders", orderRoutes);
 
 // Connect to MongoDB
@@ -54,27 +55,6 @@ mongoose
 app.get("/api/connection", (req, res) => {
   res.json({ message: "Connection successful" });
 });
-
-// const User = require('./models/User'); // Import the User model
-
-/* this is a test route to create a dummy user
-console.log("Type of User:", typeof User);
-
-app.get('/api/test-user', async (req, res) => {
-    try {
-      const dummyUser = new User({
-        username: 'testuser',
-        email: 'example@123.com',
-        password: 'password123',});
-
-        await dummyUser.save(); // Save the dummy user to the database
-        res.json({ message: 'Dummy user created successfully', user: dummyUser });
-    } catch (error) {
-        console.error('Error creating dummy user:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-*/
 
 // Start the server and listen on the specified port
 // Logs a message to confirm the backend is running

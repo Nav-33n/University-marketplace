@@ -28,6 +28,7 @@ export default function ConfirmOrder({ userToken }) {
   if (!sellerNotify || sellerNotify.length === 0)
     return <p className="p-4 text-red-500">Waiting for your first buyer.</p>;
 
+  console.log(sellerNotify);
   return (
     <div className="w-full flex flex-col items-center gap-2">
       {sellerNotify.map((item, index) => (
@@ -39,7 +40,7 @@ export default function ConfirmOrder({ userToken }) {
           <div className="flex justify-center items-center ">
             <div className="flex w-40 h-40 justify-center items-center rounded-2xl bg-amber-200">
               <img
-                src={item.itemImageURL}
+                src={item.itemSnapshot.imageURL}
                 alt="Main Product"
                 className=" w-38 h-38 object-cover rounded-xl"
               />
@@ -53,24 +54,30 @@ export default function ConfirmOrder({ userToken }) {
                 Title:
               </span>
               <span className="font-normal text-[#010101c8] uppercase line-clamp-1 overflow-hidden text-ellipsis">
-                {item.itemTitle}
+                {item.itemSnapshot.title}
               </span>
 
               {/* Tooltip */}
               <div className="absolute left-0 top-full mt-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black text-white text-xs px-2 py-1 rounded max-w-xs whitespace-normal pointer-events-none">
-                {item.itemTitle}
+                {item.itemSnapshot.title}
               </div>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
               Buyer:{" "}
               <span className="font-normal text-black text-sm">
-                {item.buyer.name} ({item.department})
+                {item.buyer.name} ({item.itemSnapshot.department})
               </span>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
               Price:{" "}
               <span className="font-normal text-black text-sm">
-                ₹{item.price}
+                ₹{item.price || item.rentalDetails.pricePerDay}
+              </span>
+            </span>
+            <span className="text-[#546e88] font-semibold italic ">
+              Type:{" "}
+              <span className="font-normal text-black text-sm capitalize">
+                {item.orderType}
               </span>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
@@ -86,7 +93,7 @@ export default function ConfirmOrder({ userToken }) {
               </span>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
-              Purchase Date:{" "}
+              Order Date:{" "}
               <span className="font-normal text-black text-sm">
                 {new Date(item.createdAt).toLocaleDateString("en-GB")}
               </span>
@@ -104,20 +111,20 @@ export default function ConfirmOrder({ userToken }) {
                 Place:
                 <span className="font-light capitalize text-wrap">
                   {" "}
-                  {item.place}{" "}
+                  {item.itemSnapshot.place}{" "}
                 </span>
               </h3>
               <h3 className="text-black font-semibold">
                 {" "}
                 Address/Building:{" "}
                 <span className="font-light capitalize text-wrap">
-                  {item.address}
+                  {item.itemSnapshot.address}
                 </span>
               </h3>
               <span className="text-[#546e88] font-semibold italic ">
                 OTP:{" "}
                 <span className="font-normal text-black text-sm">
-                  {item.otp.seller}
+                  {item.otp.code}
                 </span>
               </span>
               <span className="text-[#546e88] font-semibold italic ">
@@ -126,6 +133,14 @@ export default function ConfirmOrder({ userToken }) {
                   {new Date(item.otp.expiresAt).toLocaleDateString("en-GB")}
                 </span>
               </span>
+              {item.rentalDetails.totalDays ? (
+                <span className="text-[#546e88] font-semibold italic ">
+                  Duration:{" "}
+                  <span className="font-normal text-black text-sm">
+                    {item.rentalDetails.totalDays} Days
+                  </span>
+                </span>
+              ) : null}
             </div>
           </div>
           {item.status === "waiting-confirmation" ? (
@@ -140,7 +155,7 @@ export default function ConfirmOrder({ userToken }) {
                 Successfully Verified.
               </span>
             </div>
-          ) : item.status === "dealed-closed" ? (
+          ) : item.status === "deal-closed" ? (
             <div>
               <span className="text-[#546e88] font-semibold italic mr-8">
                 Order Successfully Delivered.

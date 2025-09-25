@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   createOrder,
+  createRental,
   getUserPurchase,
   getSellerOrders,
   updateOrderStatus,
@@ -13,7 +14,7 @@ const protect = require("../middleware/authMiddleware");
 router.post("/create", protect, createOrder); // Route to create a new order
 router.get("/purchase", protect, getUserPurchase); //Route to get user purchase
 router.get("/seller", protect, getSellerOrders); // Route to get seller orders
-
+router.post("/rental-create", protect, createRental); // Route to create a new rental order
 router.post("/update/:id", protect, updateOrderStatus); // Route to update order status
 router.post("/verify-otp/:id", protect, verifyOtp);
 

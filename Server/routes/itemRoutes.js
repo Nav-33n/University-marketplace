@@ -5,9 +5,9 @@ const itemController = require("../controllers/itemController");
 const multiUpload = require("../middleware/multiUpload"); // Middleware for handling multiple file uploads
 const protect = require("../middleware/authMiddleware");
 
-router.get("/purchases", protect, itemController.getMyPurchases); // Get items purchased by the user
+// router.get("/purchases", protect, itemController.getMyPurchases); // Get items purchased by the user
 
-router.get("/sold", protect, itemController.getMySoldItems); // Get items sold by the user
+// router.get("/sold", protect, itemController.getMySoldItems); // Get items sold by the user
 
 router.get("/myproduct", protect, itemController.getUserItems); //get user all items list
 

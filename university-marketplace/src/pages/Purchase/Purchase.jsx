@@ -42,11 +42,11 @@ export default function Purchase({ userToken }) {
         >
           {/* Image Section */}
           <div className="flex justify-center items-center ">
-            <div className="flex w-32 h-32  ml-4 justify-center items-center rounded-2xl bg-amber-200">
+            <div className="flex w-40 h-40 justify-center items-center rounded-2xl bg-amber-200">
               <img
-                src={item.itemImageURL}
+                src={item.itemSnapshot.imageURL}
                 alt="Main Product"
-                className=" w-30 h-30 object-cover rounded-xl"
+                className=" w-38 h-38 object-cover rounded-xl"
               />
             </div>
           </div>
@@ -58,12 +58,12 @@ export default function Purchase({ userToken }) {
                 Title:
               </span>
               <span className="font-normal text-[#010101c8] uppercase line-clamp-1 overflow-hidden text-ellipsis">
-                {item.itemTitle}
+                {item.itemSnapshot.title}
               </span>
 
               {/* Tooltip */}
               <div className="absolute left-0 top-full mt-1 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black text-white text-xs px-2 py-1 rounded max-w-xs whitespace-normal pointer-events-none">
-                {item.itemTitle}
+                {item.itemSnapshot.title}
               </div>
             </span>
 
@@ -76,7 +76,13 @@ export default function Purchase({ userToken }) {
             <span className="text-[#546e88] font-semibold italic ">
               Price:{" "}
               <span className="font-normal text-black text-sm">
-                ₹{item.price}
+                ₹{item.price || item.rentalDetails.pricePerDay}
+              </span>
+            </span>
+            <span className="text-[#546e88] font-semibold italic ">
+              Type:{" "}
+              <span className="font-normal text-black text-sm capitalize">
+                {item.orderType}
               </span>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
@@ -86,9 +92,9 @@ export default function Purchase({ userToken }) {
               </span>
             </span>
             <span className="text-[#546e88] font-semibold italic ">
-              Purchase Date:{" "}
+              Order Date:{" "}
               <span className="font-normal text-black text-sm">
-                {new Date(item.createdAt).toLocaleDateString()}
+                {new Date(item.createdAt).toLocaleDateString("en-GB")}
               </span>
             </span>
           </div>
@@ -102,12 +108,17 @@ export default function Purchase({ userToken }) {
             <div className="gap-1 flex-col flex">
               <h3 className="text-black font-semibold  text-wrap">
                 Place:
-                <span className="font-light capitalize"> {item.place} </span>
+                <span className="font-light capitalize">
+                  {" "}
+                  {item.itemSnapshot.place}{" "}
+                </span>
               </h3>
               <h3 className="text-black font-semibold  text-wrap">
                 {" "}
                 Address/Building:{" "}
-                <span className="font-light capitalize">{item.address}</span>
+                <span className="font-light capitalize">
+                  {item.itemSnapshot.address}
+                </span>
               </h3>
               <h3 className="text-black font-semibold">
                 Seller Contact:{" "}
@@ -122,6 +133,14 @@ export default function Purchase({ userToken }) {
                   {item.otp.buyer}
                 </span>
               </span>
+              {item.rentalDetails.totalDays ? (
+                <span className="text-[#546e88] font-semibold italic ">
+                  Duration:{" "}
+                  <span className="font-normal text-black text-sm">
+                    {item.rentalDetails.totalDays} Days
+                  </span>
+                </span>
+              ) : null}
             </div>
           </div>
 
@@ -139,7 +158,7 @@ export default function Purchase({ userToken }) {
                   Order Successfully Exchange
                 </span>
               </div>
-            ) : item.status === "dealed-closed" ? (
+            ) : item.status === "deal-closed" ? (
               <div>
                 <span className="text-[#546e88] font-semibold italic mr-8">
                   Order Successfully Delivered.

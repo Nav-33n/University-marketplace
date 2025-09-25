@@ -1,19 +1,19 @@
-const express = require('express');
-const router = express.Router();
+// const express = require("express");
+// const router = express.Router();
 
-const rentalController = require('../controllers/rentalController');
-const protect = require('../middleware/authMiddleware');
+// const rentalController = require("../controllers/rentalController");
+// const protect = require("../middleware/authMiddleware");
 
-//Create a rental 
-router.post('/', protect, rentalController.createRental);
+// //Create a rental
+// router.post("/create", protect, rentalController.createRental);
 
-//Get all rentals for the logged-in user
-router.get('/user', protect, rentalController.getMyRentals);
+// // //Get all rentals for the logged-in user
+// // router.get("/user", protect, rentalController.getMyRentals);
 
-// mark a rental as completed (by a owner)
-router.put('/:id/complete', protect, rentalController.completeRental);
+// // // mark a rental as completed (by a owner)
+// // router.put("/:id/complete", protect, rentalController.completeRental);
 
-// cancel a rental (by a renter)
-router.put('/:id', protect, rentalController.cancelRental);
+// // // cancel a rental (by a renter)
+// // router.put("/:id", protect, rentalController.cancelRental);
 
-module.exports = router;
+// module.exports = router;

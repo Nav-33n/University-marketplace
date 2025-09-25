@@ -78,7 +78,7 @@ function ProductInfo() {
           <div className="text-[#365349] text-[14px]">
             {product.type} by{" "}
             <span className="font-normal italic text-black">
-              {product.user.username}
+              {product.seller.username}
             </span>
           </div>
 
@@ -104,10 +104,11 @@ function ProductInfo() {
               img: images[selectedImage],
               title: product.title,
               price: product.price,
+              type: product.type,
             }}
           >
             <button className="w-full py-3 bg-white border hover:bg-cyan-300 hover:text-white rounded-md font-normal text-center text-cyan-600 cursor-pointer">
-              Buy this Item
+              {product.type === "Rent" ? "Rent this Item" : "Buy this Item"}
             </button>
           </NavLink>
           <div className="flex justify-between mb-1 mt-2">
